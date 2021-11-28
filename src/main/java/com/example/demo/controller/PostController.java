@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
+import com.example.demo.dto.PostDto;
 import com.example.demo.service.PostService;
 import com.example.demo.service.Test;
 import org.hibernate.Session;
@@ -29,17 +30,17 @@ public class PostController {
     PostService postService;
 
     @GetMapping
-    public List<Post> getAll(){
+    public List<PostDto> getAll(){
         return postService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Post> getById(@PathVariable long id){
+    public PostDto getById(@PathVariable long id){
         return postService.getById(id);
     }
 
     @PostMapping
-    public void addPost(@RequestBody Post post){
+    public void addPost(@RequestBody PostDto post){
         postService.addPost(post);
     }
 
@@ -61,7 +62,7 @@ public class PostController {
    Test test;
 
     @GetMapping("/author")
-    public List<Post> findByAuthor(@RequestBody String author){
+    public List<PostDto> findByAuthor(@RequestBody String author){
         System.out.println(author);
         return postService.findByAuthor(author);
     }

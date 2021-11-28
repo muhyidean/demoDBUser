@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
+import com.example.demo.dto.PostDto;
+import com.example.demo.dto.UserDto;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.PostService;
 import com.example.demo.service.UserService;
@@ -24,20 +26,20 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public List<User> getAll(){
+    public List<UserDto> getAll(){
         return userService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getById(@PathVariable long id){ return userService.getById(id); }
+    public UserDto getById(@PathVariable long id){ return userService.getById(id); }
 
     @PostMapping
-    public void addPost(@RequestBody User user){
+    public void addPost(@RequestBody UserDto user){
         userService.addUser(user);
     }
 
     @GetMapping("/{id}/posts")
-    public List<Post> getPostsUser(@PathVariable long id) { return userService.getPostsById(id);
+    public List<PostDto> getPostsUser(@PathVariable long id) { return userService.getPostsById(id);
     }
 
     @Autowired
@@ -48,7 +50,7 @@ public class UserController {
      *
      */
     @GetMapping("/{id}/posts/{pid}")
-    public Optional<Post> getOnePostsUser(@PathVariable("pid") long id) { return postService.getById(id);
+    public PostDto getOnePostsUser(@PathVariable("pid") long id) { return postService.getById(id);
     }
 
 

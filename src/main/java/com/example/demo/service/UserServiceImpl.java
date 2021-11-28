@@ -2,7 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
+import com.example.demo.dto.PostDto;
+import com.example.demo.dto.UserDto;
 import com.example.demo.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -18,24 +22,33 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ModelMapper modelMapper;
+
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll() ;
+    public List<UserDto> getAll() {
+        return
+                userRepository.findAll().stream()
+                        .map(user -> modelMapper.map(user, UserDto.class))
+                        .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<User> getById(long id) {
-        return userRepository.findById(id);
+    public UserDto getById(long id) {
+        return modelMapper.map(userRepository.findById(id).orElse(null),UserDto.class);
     }
 
     @Override
-    public void addUser(User user) {
-        userRepository.save(user);
+    public void addUser(UserDto user) {
+        userRepository.save(modelMapper.map(user,User.class));
     }
 
     @Override
-    public List<Post> getPostsById(long id){
-        return userRepository.getPostsById(id);
+    public List<PostDto> getPostsById(long id){
+        return
+                userRepository.getPostsById(id).stream()
+                        .map(post -> modelMapper.map(post,PostDto.class) )
+                        .collect(Collectors.toList());
     }
 
     @Override
