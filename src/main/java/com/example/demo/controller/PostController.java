@@ -50,12 +50,12 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable long id, @RequestBody Post post){
+    public void update(@PathVariable long id, @RequestBody PostDto post){
         postService.updatePost(id, post);
     }
 
 
-   // After this line jsut for education.
+   // After this line just for education.
     /*
      */
    @Autowired

@@ -4,6 +4,7 @@ import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
 import com.example.demo.dto.PostDto;
 import com.example.demo.dto.UserDto;
+import com.example.demo.helper.ListMapper;
 import com.example.demo.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,16 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    ListMapper<User,UserDto> listMapperUserToDto;
+    @Autowired
+    ListMapper<Post,PostDto> listMapperPostToDto;
 
     @Override
     public List<UserDto> getAll() {
-        return
-                userRepository.findAll().stream()
-                        .map(user -> modelMapper.map(user, UserDto.class))
-                        .collect(Collectors.toList());
+        return (List<UserDto>) listMapperUserToDto.mapList(userRepository.findAll(),new UserDto());
     }
 
     @Override
@@ -45,10 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<PostDto> getPostsById(long id){
-        return
-                userRepository.getPostsById(id).stream()
-                        .map(post -> modelMapper.map(post,PostDto.class) )
-                        .collect(Collectors.toList());
+        return (List<PostDto>) listMapperPostToDto.mapList(userRepository.getPostsById(id),new PostDto());
     }
 
     @Override

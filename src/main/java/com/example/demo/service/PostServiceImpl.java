@@ -4,11 +4,14 @@ package com.example.demo.service;
 import com.example.demo.domain.Post;
 
 import com.example.demo.dto.PostDto;
+import com.example.demo.helper.ListMapper;
 import com.example.demo.repository.PostRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +27,20 @@ public class PostServiceImpl implements PostService{
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    ListMapper<Post,PostDto> listMapperPostToDto;
+
+//    @Override
+//    public List<PostDto> getAll(){
+//        return
+//        postRepository.findAll().stream()
+//                .map(post -> modelMapper.map(post,PostDto.class) )
+//                .collect(Collectors.toList());
+//    }
+
     @Override
     public List<PostDto> getAll(){
-        return
-        postRepository.findAll().stream()
-                .map(post -> modelMapper.map(post,PostDto.class) )
-                .collect(Collectors.toList());
+        return (List<PostDto>) listMapperPostToDto.mapList(postRepository.findAll(),new PostDto());
     }
 
     @Override
@@ -65,15 +76,9 @@ public class PostServiceImpl implements PostService{
                 .collect(Collectors.toList());
     }
 
-    //FIXME Can I put orm operations in the service layer, for example I want to merge here
     @Override
-    public void updatePost(long id, Post p){
-        Optional<Post> existingPost = postRepository.findById(id);
-        if(existingPost != null) {
-            p.setId(id);
-            postRepository.save(p);
-        }
+    public void updatePost( long id, PostDto p){
+        p.setId(id);
+        postRepository.save(modelMapper.map(p,Post.class));
     }
-
-
 }
