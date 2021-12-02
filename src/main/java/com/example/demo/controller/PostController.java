@@ -2,24 +2,16 @@ package com.example.demo.controller;
 
 
 import com.example.demo.domain.Post;
-import com.example.demo.domain.User;
 import com.example.demo.dto.PostDto;
 import com.example.demo.service.PostService;
-import com.example.demo.service.Test;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @Author Muhyieddin Altarawneh
  *
- * This is an implementation for educational purposes to illustrate the transactions
- * of the entity manager
  */
 @CrossOrigin(origins = {"http://localhost:3000"})
 @RestController
@@ -55,48 +47,6 @@ public class PostController {
     }
 
 
-   // After this line just for education.
-    /*
-     */
-   @Autowired
-   Test test;
-
-    @GetMapping("/author")
-    public List<PostDto> findByAuthor(@RequestBody String author){
-        System.out.println(author);
-        return postService.findByAuthor(author);
-    }
-
-    @PostMapping("/persist")
-    public void insertToContext(@RequestBody  Post post){
-        test.insertToContext(post);
-    }
-
-    @GetMapping("/remove/{id}")
-    public void removeFromContext(@PathVariable long id){
-        test.removeFromContext(id);
-    }
-
-    @PostMapping("/detach/{id}")
-    public void detachFromContext(@PathVariable long id){
-        test.detachFromContext(id);
-    }
-
-    @PostMapping("/check/{id}")
-    public Post check(@PathVariable long id){
-        return test.getSession( id);
-    }
-
-    @GetMapping("/change/{id}")
-    public void changePersisted(@PathVariable long id){
-        test.changeToTran( id);
-    }
-
-
-    @GetMapping("/detachAndMerge/{id}")
-    public void detachAndMerge(@PathVariable long id){
-         test.detachAndMerge(id);
-    }
 
 
 

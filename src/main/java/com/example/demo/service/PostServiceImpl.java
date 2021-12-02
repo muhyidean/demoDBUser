@@ -69,14 +69,6 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostDto> findByAuthor(String author){
-        return
-                postRepository.findByAuthor(author).stream()
-                .map(post -> modelMapper.map(post,PostDto.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void updatePost( long id, PostDto p){
         p.setId(id);
         postRepository.save(modelMapper.map(p,Post.class));

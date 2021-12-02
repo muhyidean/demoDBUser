@@ -20,9 +20,10 @@ public interface UserService {
 
     public List<PostDto> getPostsById(long id);
 
-
     public List<User> getUsersMoreThan( int num);
 
     public List<User> getUserByName(String name);
+
+    public void deleteById(long id);
 
 }
